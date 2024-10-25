@@ -4,9 +4,13 @@ public class BinaryTree {
         NodeA esq, dre;
 
         NodeA(){
-            this(null);
+            thbis(null);
         }
-
+    private void polgaycomrpito(){
+            if (inf==null) {
+                return;
+            }
+}
         NodeA(Object o){
             this(o, null, null);
         }
@@ -17,12 +21,62 @@ public class BinaryTree {
             this.dre = b;
         }
         private boolean addNodeRecursive(Person unaPersona, String level){
-            return addNode(unaPersona, level);
+            if(level.isEmpty()){
+                return false;
+            }
+            char direction = level.charAt(0);
+            String remainingSerie = level.substring(1);
+            if (direction == 'L'){
+                if(remainingSerie.isEmpty()){
+                    if(this.esq == null){
+                        this.esq = new NodeA(unaPersona);
+                    }
+                }
+                else{
+                    if(this.esq == null){
+                        this.esq = new NodeA();
+                    }
+                }
+                return this.esq.addNodeRecursive(unaPersona, remainingSerie);
+            }
+            else if(direction == 'R') {
+                if(remainingSerie.isEmpty()){
+                    if(this.dre == null){
+                        this.dre = new NodeA(unaPersona);
+                    }
+                }
+                else{
+                    if(this.dre == null){
+                        this.dre = new NodeA();
+                    }
+                }
+                return this.dre.addNodeRecursive(unaPersona, remainingSerie);
+            }
+            return false;
+        }
+
+        private void displayTreeRecursive(int level) {
+            if (this.esq != null) {
+                this.esq.displayTreeRecursive(level + 1);
+            }
+            System.out.println("\t".repeat(level) + (this.inf != null ? ((Person) this.inf).toString() : "null")); //condicional ternari
+            if (this.dre != null) {
+                this.dre.displayTreeRecursive(level + 1);
+            }
+        }
+
+        private void removePersonRecursive(String name){
+            if(this.inf != null && ((Person)this.inf).getName().equals(name)){
+                if(this.esq == null){
+                    return this.dre;
+                }
+            }
         }
     }
     protected NodeA arrel;
 
     public BinaryTree(){
+
         this.arrel = null;
     }
 
@@ -35,22 +89,27 @@ public class BinaryTree {
     }
 
     public boolean addNode(Person unaPersona, String level){
-        NodeA actual;
-        NodeA nou = new NodeA(unaPersona);
-        char[] path = level.toCharArray();
-        if(path.length == 1){
-            if(path[0] == 'L'){
-                actual =
-            }
-            else if(path[0] == 'R'){
-
-            }
+        if(arrel == null){
+            arrel = new NodeA(unaPersona);
+            return true;
         }
-        if(path[0] == 'L'){
-            actual =
-        }
-        else if(path[0] == 'R'){
+        return arrel.addNodeRecursive(unaPersona, level);
+    }
 
+    public void displayTree(){
+        if (arrel != null) {
+            arrel.displayTreeRecursive(0);
+        } else {
+            System.out.println("The tree is empty.");
+        }
+    }
+
+    public void removePerson(String name){
+        if(arrel.inf.equals(name)){
+            arrel = null;
+        }
+        else{
+            arrel.removePersonRecursive(name);
         }
     }
 
