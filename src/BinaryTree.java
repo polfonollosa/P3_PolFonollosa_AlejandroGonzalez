@@ -36,7 +36,7 @@ public class BinaryTree {
                     this.dre.preOrderSaveRecursive(buf);
                 }
             }
-            catch (Exception e){
+            catch (IOException e){
                 e.printStackTrace();
             }
         }
@@ -80,7 +80,7 @@ public class BinaryTree {
             if (this.esq != null) {
                 this.esq.displayTreeRecursive(level + 1);
             }
-            System.out.println("\t".repeat(level) + (this.inf != null ? ((Person) this.inf).toString() : "null")); //condicional ternari
+            System.out.println("\t".repeat(level) + (this.inf != null ? (this.inf).toString() : "null")); //condicional ternari
             if (this.dre != null) {
                 this.dre.displayTreeRecursive(level + 1);
             }
@@ -140,12 +140,12 @@ public class BinaryTree {
        try{
            BufferedReader buf = new BufferedReader(new FileReader("Files/"+ filename +".txt"));
            this.arrel = preOrderLoad(buf);
-       } catch (FileNotFoundException e) {
+       } catch (IOException e) {
            throw new RuntimeException(e);
        }
     }
 
-    public String getArrel(){
+    public String getName(){
         return this.arrel.inf.toString();
     }
 
@@ -160,7 +160,7 @@ public class BinaryTree {
         tornar.esq = preOrderLoad(buf);
         tornar.dre = preOrderLoad(buf);
         return tornar;
-    } catch (Exception e) {
+    } catch (IOException e) {
         e.printStackTrace();
         return null;
     }
@@ -189,7 +189,7 @@ public class BinaryTree {
             arrel.preOrderSaveRecursive(buf);
             buf.close();
         }
-        catch (Exception e) {
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
