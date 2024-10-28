@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Students {
-    class Node{
+    protected class Node{
         protected Node next;
         protected BinaryTree info;
 
