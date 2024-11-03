@@ -64,13 +64,13 @@ public class Person {
     public String getMaritalStatusString() {
         switch (this.maritalStatus) {
             case Person.WIDOWED:
-                return "WIDOWED";
+                return "Widowed";
             case Person.MARRIED:
-                return "MARRIED";
+                return "Married";
             case Person.SINGLE:
-                return "SINGLE";
+                return "Single";
             case Person.DIVORCED:
-                return "DIVORCED";
+                return "Divorced";
             default:
                 return null;
         }

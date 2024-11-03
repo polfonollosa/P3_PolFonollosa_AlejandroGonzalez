@@ -23,6 +23,13 @@ public class BinaryTree {
             try {
                 if (this.inf != null) {
                     buf.write(this.inf.toString());
+                    if (this.esq == null && this.dre == null) {
+                        buf.write("; ;");
+                    } else if (this.esq == null) {
+                        buf.write(";");
+                    } else if (this.dre == null) {
+                        buf.write(";");
+                    }
                     buf.newLine();
                 } else {
                     buf.write(";");
@@ -30,15 +37,9 @@ public class BinaryTree {
                 }
                 if (this.esq != null) {
                     this.esq.preOrderSaveRecursive(buf);
-                } else {
-                    buf.write(";");
-                    buf.newLine();
                 }
                 if (this.dre != null) {
                     this.dre.preOrderSaveRecursive(buf);
-                } else {
-                    buf.write(";");
-                    buf.newLine();
                 }
             } catch (IOException e) {
                 e.printStackTrace();

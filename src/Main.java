@@ -121,6 +121,7 @@ public class Main {
 
     private static void modifyStudent(Students StudentList, Scanner sc) {
         System.out.println("Enter the name of the student you want to modify:");
+        sc.nextLine();
         String name = sc.nextLine();
         BinaryTree bt = StudentList.getStudent(name);
 
@@ -145,13 +146,22 @@ public class Main {
 
         if (option == 1) {
             System.out.println("Add family member");
-            System.out.println("Enter the name, marital status, place of birth of the family member you want to add:");
-            String familyName = sc.nextLine();
+            System.out.println("Enter the name of the family member you want to add:");
+            name = sc.nextLine();
+            System.out.println("Enter the marital status of the family member:");
             String maritalStatus = sc.nextLine();
+            System.out.println("Enter the place of birth of the family member:");
             String placeOfBirth = sc.nextLine();
-            String s = "Name:" + familyName + ",Origin:" + placeOfBirth + ",MaritalStatus:" + maritalStatus;
-            bt.addNode(new Person(s), "");
-        } else if (option == 2) {
+            String s = "Name: " + name + ", place of Origin: " + placeOfBirth + ", marital Status: " + maritalStatus;
+            System.out.println("Introdueix la ruta, L o R, ex: LRL , RRL , LRR , etc.");
+            String ruta = sc.nextLine();
+            if(bt.addNode(new Person(s), ruta)){
+                System.out.println("Family member added successfully.");
+            } else {
+                System.out.println("Error adding family member.");
+            }
+        }
+        else if (option == 2) {
             System.out.println("Remove family member, which one?");
             String familyName = sc.nextLine();
             bt.removePerson(familyName);
