@@ -169,6 +169,7 @@ public class Main {
     }
 
     private static void mostrarInforme(Students studentsList, Scanner sc) {
+        sc.nextLine();
 
         System.out.println("Enter the city where the student was born:");
         String birthCity = sc.nextLine();
@@ -178,6 +179,9 @@ public class Main {
         int totalStudents = 0;
         int studentsFromBirthCity = 0;
         int studentsFromFamilyOriginCity = 0;
+        int studentsWithOneParent = 0;
+        int studentsWithUnmarriedParents = 0;
+        int studentsWithMoreThanTwoGrandparents = 0;
 
         ArrayList<String> students = studentsList.getAllStudentsName();
         for (String student : students) {
@@ -189,11 +193,23 @@ public class Main {
             if (bt.isDescentFrom(familyOriginCity)) {
                 studentsFromFamilyOriginCity++;
             }
+            if (bt.howManyParents() == 1) {
+                studentsWithOneParent++;
+            }
+            if (!bt.marriedParents()) {
+                studentsWithUnmarriedParents++;
+            }
+            if (bt.howManyGrandParents() > 2) {
+                studentsWithMoreThanTwoGrandparents++;
+            }
         }
 
         System.out.println("Total number of students: " + totalStudents);
         System.out.println("Number of students born in " + birthCity + ": " + studentsFromBirthCity);
         System.out.println("Number of students with family origin in " + familyOriginCity + ": " + studentsFromFamilyOriginCity);
+        System.out.println("Number of students with one parent: " + (studentsWithOneParent + 1));
+        System.out.println("Number of students with unmarried parents: " + studentsWithUnmarriedParents);
+        System.out.println("Number of students with more than two grandparents: " + studentsWithMoreThanTwoGrandparents);
     }
 
 }

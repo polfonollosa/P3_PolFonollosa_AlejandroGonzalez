@@ -91,10 +91,10 @@ public class BinaryTree {
         private void removePersonRecursive(String name) {
             if (this.esq != null && (this.esq.inf).getName().equals(name)) {
                 System.out.println("Removing " + name);
-                this.esq = (this.esq.esq != null) ? this.esq.esq : this.esq.dre;
+                this.esq.inf = null;
             } else if (this.dre != null && (this.dre.inf).getName().equals(name)) {
                 System.out.println("Removing " + name);
-                this.dre = (this.dre.dre != null) ? this.dre.dre : this.dre.esq;
+                this.dre.inf = null;
             } else {
                 if (this.esq != null) {
                     this.esq.removePersonRecursive(name);
@@ -157,7 +157,7 @@ public class BinaryTree {
         try {
             // Leer la siguiente línea del archivo
             String line = buf.readLine();
-            if (line == null || line.equals("-")) {
+            if (line == ";" || line.equals("-")) {
                 return null; // Nodo nulo si la línea es null o un guión
             }
 
@@ -271,8 +271,8 @@ public class BinaryTree {
                 Person esquerre = this.arrel.esq.inf;
                 Person dreat = this.arrel.dre.inf;
                 if (esquerre != null && dreat != null &&
-                        esquerre.getMaritalStatusString().equals("MARRIED") &&
-                        dreat.getMaritalStatusString().equals("MARRIED")) {
+                        esquerre.getMaritalStatusString().equals("Married") &&
+                        dreat.getMaritalStatusString().equals("Married")) {
                     return true;
                 }
             }
