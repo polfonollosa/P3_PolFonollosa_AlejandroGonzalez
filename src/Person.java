@@ -78,6 +78,6 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Name: " + this.name + ", Origin: " + this.placeOfOrigin + ", Marital Status: " + getMaritalStatusString();
+        return "Name: " + this.name + ", place of origin: " + this.placeOfOrigin + ", marital status: " + getMaritalStatusString();
     }
 }
