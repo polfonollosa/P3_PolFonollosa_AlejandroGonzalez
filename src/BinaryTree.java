@@ -19,77 +19,82 @@ public class BinaryTree {
             this.dre = b;
         }
 
-        private void preOrderSaveRecursive(BufferedWriter buf){
-            try{
-                if(this.inf != null){
+        private void preOrderSaveRecursive(BufferedWriter buf) {
+            try {
+                if (this.inf != null) {
                     buf.write(this.inf.toString());
                     buf.newLine();
-                }
-                else{
-                    buf.write("-");
+                } else {
+                    buf.write(";");
                     buf.newLine();
                 }
-                if(this.esq != null){
+                if (this.esq != null) {
                     this.esq.preOrderSaveRecursive(buf);
+                } else {
+                    buf.write(";");
+                    buf.newLine();
                 }
-                if(this.dre != null){
+                if (this.dre != null) {
                     this.dre.preOrderSaveRecursive(buf);
+                } else {
+                    buf.write(";");
+                    buf.newLine();
                 }
-            }
-            catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        private boolean addNodeRecursive(Person unaPersona, String level){
-            if(level.isEmpty()){
+        private boolean addNodeRecursive(Person unaPersona, String level) {
+            if (level.isEmpty()) {
                 return false;
             }
             char direction = level.charAt(0);
             String remainingSerie = level.substring(1);
-            if (direction == 'L'){
-                if(remainingSerie.isEmpty()){
-                    if(this.esq == null){
-                        this.esq = new NodeA(unaPersona);
-                    }
+            if (direction == 'L') {
+                if (this.esq == null) {
+                    this.esq = new NodeA();
                 }
-                else{
-                    if(this.esq == null){
-                        this.esq = new NodeA();
-                    }
+                if (remainingSerie.isEmpty()) {
+                    this.esq.inf = unaPersona;
+                    return true;
                 }
                 return this.esq.addNodeRecursive(unaPersona, remainingSerie);
-            }
-            else if(direction == 'R') {
-                if(remainingSerie.isEmpty()){
-                    if(this.dre == null){
-                        this.dre = new NodeA(unaPersona);
-                    }
+            } else if (direction == 'R') {
+                if (this.dre == null) {
+                    this.dre = new NodeA();
                 }
-                else{
-                    if(this.dre == null){
-                        this.dre = new NodeA();
-                    }
+                if (remainingSerie.isEmpty()) {
+                    this.dre.inf = unaPersona;
+                    return true;
                 }
                 return this.dre.addNodeRecursive(unaPersona, remainingSerie);
             }
             return false;
         }
 
-        private void displayTreeRecursive(int level) {
+        public void displayTreeRecursive(int level) {
+            // Imprime el nodo actual con la cantidad correcta de tabuladores para su nivel
+            System.out.println("    ".repeat(level) + (this.inf != null ? this.inf.toString() : "null"));
+
+            // Llamada recursiva para el subárbol izquierdo
             if (this.esq != null) {
                 this.esq.displayTreeRecursive(level + 1);
             }
-            System.out.println("\t".repeat(level) + (this.inf != null ? (this.inf).toString() : "null")); //condicional ternari
+
+            // Llamada recursiva para el subárbol derecho
             if (this.dre != null) {
                 this.dre.displayTreeRecursive(level + 1);
             }
         }
 
+
         private void removePersonRecursive(String name) {
             if (this.esq != null && (this.esq.inf).getName().equals(name)) {
+                System.out.println("Removing " + name);
                 this.esq = (this.esq.esq != null) ? this.esq.esq : this.esq.dre;
             } else if (this.dre != null && (this.dre.inf).getName().equals(name)) {
+                System.out.println("Removing " + name);
                 this.dre = (this.dre.dre != null) ? this.dre.dre : this.dre.esq;
             } else {
                 if (this.esq != null) {
@@ -138,7 +143,7 @@ public class BinaryTree {
 
     public BinaryTree(String filename){
        try{
-           BufferedReader buf = new BufferedReader(new FileReader("Files/"+ filename +".txt"));
+           BufferedReader buf = new BufferedReader(new FileReader(filename));
            this.arrel = preOrderLoad(buf);
        } catch (IOException e) {
            throw new RuntimeException(e);
@@ -146,28 +151,48 @@ public class BinaryTree {
     }
 
     public String getName(){
-        return this.arrel.inf.toString();
+        return this.arrel.inf.getName();
     }
 
-  private NodeA preOrderLoad(BufferedReader buf) {
-    try {
-        String line = buf.readLine();
-        if (line == null || line.equals("-")) {
+    private NodeA preOrderLoad(BufferedReader buf) {
+        try {
+            // Leer la siguiente línea del archivo
+            String line = buf.readLine();
+            if (line == null || line.equals("-")) {
+                return null; // Nodo nulo si la línea es null o un guión
+            }
+
+            // Dividir la línea para extraer los datos de la persona
+            String[] parts = line.split(";");
+            String personInfo = parts[0];
+            Person person = new Person(personInfo); // Crear el objeto Persona con los datos
+            NodeA node = new NodeA(person); // Crear el nodo con la persona
+
+            // Determinar el número de hijos basándonos en el final de la línea
+            if (parts.length == 1) {
+                // No hay símbolos al final -> Nodo tiene dos hijos
+                node.esq = preOrderLoad(buf); // Llamada recursiva al hijo izquierdo
+                node.dre = preOrderLoad(buf); // Llamada recursiva al hijo derecho
+            } else if (parts.length == 2) {
+                // Un solo punto y coma al final -> Nodo tiene un hijo izquierdo
+                node.esq = preOrderLoad(buf); // Llamada recursiva solo al hijo izquierdo
+                node.dre = null; // No hay hijo derecho
+            } else if (parts.length == 3) {
+                // Dos punto y coma al final -> Nodo no tiene hijos
+                node.esq = null;
+                node.dre = null;
+            }
+
+            return node; // Retornar el nodo creado
+        } catch (IOException e) {
+            e.printStackTrace();
             return null;
         }
-        Person person = new Person(line);
-        NodeA tornar = new NodeA(person);
-        tornar.esq = preOrderLoad(buf);
-        tornar.dre = preOrderLoad(buf);
-        return tornar;
-    } catch (IOException e) {
-        e.printStackTrace();
-        return null;
     }
-  }
 
-    public boolean addNode(Person unaPersona, String level){
-        if(arrel == null){
+
+    public boolean addNode(Person unaPersona, String level) {
+        if (arrel == null) {
             arrel = new NodeA(unaPersona);
             return true;
         }
@@ -182,14 +207,16 @@ public class BinaryTree {
         }
     }
 
-    public void preOrderSave(){
-        try{
+    public void preOrderSave() {
+        if (arrel == null || arrel.inf == null) {
+            throw new IllegalStateException("The tree is empty.");
+        }
+        try {
             String name = arrel.inf.getName();
-            BufferedWriter buf = new BufferedWriter(new FileWriter("Files/"+ name +".txt"));
+            BufferedWriter buf = new BufferedWriter(new FileWriter("Files/" + name + ".txt"));
             arrel.preOrderSaveRecursive(buf);
             buf.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

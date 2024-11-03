@@ -6,50 +6,63 @@ public class Person {
     public static final int SINGLE = 4;
 
     private int maritalStatus;
-    private String PlaceOfOrigin;
+    private String placeOfOrigin;
     private String name;
 
-    public Person(int maritalStatus, String PlaceOfOrigin, String name){
-        if(maritalStatus < Person.WIDOWED || maritalStatus > Person.SINGLE){
+    public Person(int maritalStatus, String placeOfOrigin, String name) {
+        if (maritalStatus < Person.WIDOWED || maritalStatus > Person.SINGLE) {
             throw new IllegalArgumentException("Marital status not good");
         }
-        this.PlaceOfOrigin = PlaceOfOrigin;
+        this.maritalStatus = maritalStatus;
+        this.placeOfOrigin = placeOfOrigin;
         this.name = name;
     }
 
-    public Person(String desc){
-        String[]part = desc.split(",");
-        this.name = part[0].split(":")[1];
-        this.PlaceOfOrigin = part[1].split(":")[1];
-        String marry = part[2].split(":")[1];
-        switch (marry){
-            case "WIDOWED":
-                this.maritalStatus = Person.WIDOWED;
-                break;
-            case "MARRIED":
-                this.maritalStatus = Person.MARRIED;
-                break;
-            case "SINGLE":
-                this.maritalStatus = Person.SINGLE;
-                break;
-            case "DIVORCED":
-                this.maritalStatus = Person.DIVORCED;
-                break;
-            default:
-                throw new IllegalArgumentException("marital status not avaiable");
+    public Person(String desc) {
+        String[] part = desc.split(" ");
+        if (part.length != 9 && part.length != 10 && part.length != 0) {
+            throw new IllegalArgumentException("Description format is incorrect: " + desc);
+        }
+        if(part.length != 0) {
+            this.name = part[1].substring(0, part[1].length() - 1); // Remove trailing comma
+            this.placeOfOrigin = part[5].substring(0, part[5].length() - 1); // Remove trailing comma
+            String marry = part[8]; // Remove trailing semicolon
+            System.out.println(name);
+            System.out.println(placeOfOrigin);
+            System.out.println(marry);
+            switch (marry) {
+                case "Single":
+                    this.maritalStatus = Person.SINGLE;
+                    break;
+                case "Married":
+                    this.maritalStatus = Person.MARRIED;
+                    break;
+                case "Widowed":
+                    this.maritalStatus = Person.WIDOWED;
+                    break;
+                case "Divorced":
+                    this.maritalStatus = Person.DIVORCED;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Marital status not available");
+            }
         }
     }
-    public String getName(){
+
+    public String getName() {
         return this.name;
     }
-    public String getPlaceOfOrigin(){
-        return this.PlaceOfOrigin;
+
+    public String getPlaceOfOrigin() {
+        return this.placeOfOrigin;
     }
-    public int getMaritalStatus(){
+
+    public int getMaritalStatus() {
         return this.maritalStatus;
     }
-    public String getMaritalStatusString(){
-        switch (this.maritalStatus){
+
+    public String getMaritalStatusString() {
+        switch (this.maritalStatus) {
             case Person.WIDOWED:
                 return "WIDOWED";
             case Person.MARRIED:
@@ -62,7 +75,9 @@ public class Person {
                 return null;
         }
     }
-    public String toString(){
-        return "Name: " + this.name + ", Origin: " + this.PlaceOfOrigin + ", Matrial Status: " + getMaritalStatusString();
+
+    @Override
+    public String toString() {
+        return "Name: " + this.name + ", Origin: " + this.placeOfOrigin + ", Marital Status: " + getMaritalStatusString();
     }
 }
