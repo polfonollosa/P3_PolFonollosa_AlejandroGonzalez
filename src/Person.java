@@ -27,9 +27,6 @@ public class Person {
             this.name = part[1].substring(0, part[1].length() - 1); // Remove trailing comma
             this.placeOfOrigin = part[5].substring(0, part[5].length() - 1); // Remove trailing comma
             String marry = part[8]; // Remove trailing semicolon
-            System.out.println(name);
-            System.out.println(placeOfOrigin);
-            System.out.println(marry);
             switch (marry) {
                 case "Single":
                     this.maritalStatus = Person.SINGLE;

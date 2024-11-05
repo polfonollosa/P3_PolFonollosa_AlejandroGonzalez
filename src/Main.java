@@ -5,29 +5,26 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-
         int option;
         boolean exit = false;
         Students list = new Students();
         list = readAllStudents("Files");
         Scanner sc = new Scanner(System.in);
 
-        while(exit == false){
-
-            System.out.println("============ MENU ============");
-            System.out.println("1. Show Students List ");
-            System.out.println("2. Show Student Family ");
-            System.out.println("3. Add New Student ");
-            System.out.println("4. Modify Student ");
-            System.out.println("5. Show Informe ");
-            System.out.println("6. Save and Exit ");
-            System.out.println("================================");
-            System.out.println("Introduce the number of the option you want to execute:");
+        while (!exit) {
+            System.out.println("Menu Principal:");
+            System.out.println("\t1. Mostrar llistat d'estudiants");
+            System.out.println("\t2. Mostrar família d'un estudiant");
+            System.out.println("\t3. Afegir un estudiant");
+            System.out.println("\t4. Modificar un estudiant");
+            System.out.println("\t5. Mostrar el informe");
+            System.out.println("\t6. Guardar i Sortir");
+            System.out.println("Tria una opció:");
 
             option = sc.nextInt();
 
             while (option < 1 || option > 6) {
-                System.out.println("Enter a valid option:");
+                System.out.println("Introdueix una opció vàlida:");
                 option = sc.nextInt();
             }
 
@@ -52,117 +49,119 @@ public class Main {
                     exit = true;
                     break;
             }
-            System.out.println();
+
         }
+        System.out.println("Sortint...");
     }
-    private static Students readAllStudents(String folderPath){
-        Students student  = new Students();
+
+    private static Students readAllStudents(String folderPath) {
+        Students student = new Students();
         File folder = new File(folderPath);
         File[] files = folder.listFiles();
         if (files != null) {
             for (File file : files) {
                 if (file.isFile()) {
                     BinaryTree bt = new BinaryTree(folderPath + "/" + file.getName());
+                    System.out.println("Alumne carregat des del fitxer: " + file.getName());
+                    System.out.println("Arbre binari estructurat:");
                     bt.displayTree();
                     student.addStudent(bt);
                 }
             }
         }
-
         return student;
     }
 
-    private static void saveAllStudents(Students StudentsList){
+    private static void saveAllStudents(Students StudentsList) {
         ArrayList<String> students = StudentsList.getAllStudentsName();
         for (String student : students) {
             BinaryTree bt = StudentsList.getStudent(student);
             bt.preOrderSave();
+            System.out.println("Alumne guardat al fitxer: " + student);
         }
-
     }
 
-    private static void displayAllStudents(Students StudentsList){
+    private static void displayAllStudents(Students StudentsList) {
         ArrayList<String> students = StudentsList.getAllStudentsName();
-        if(students.isEmpty()){
-            throw new NoSuchElementException("The list of students is empty");
+        if (students.isEmpty()) {
+            throw new NoSuchElementException("La llista d'estudiants està buida");
         }
-        System.out.println("The list of students is:");
+        System.out.println("Mostrem els noms dels estudiants:");
         for (String student : students) {
-            System.out.println("- " + student);
+            System.out.println("\t" + student);
         }
     }
 
     private static void showStudentFamily(Students studentList, Scanner sc) {
-        System.out.println("Enter the name of the student you want to see the family of:");
+        System.out.println("Introdueix el nom de l'estudiant del qual vols veure la família:");
         sc.nextLine();
         String name = sc.nextLine();
         BinaryTree bt = studentList.getStudent(name);
         if (bt != null) {
-            System.out.println("The family of " + name + " is represented by:");
+            System.out.println("La família de " + name + " està representada per:");
             bt.displayTree();
         } else {
-            System.out.println("Student not found.");
+            System.out.println("Estudiant no trobat.");
         }
     }
 
-    private static void addNewStudent(Students StudentList, Scanner sc){
-        System.out.println("Enter the name of new Student:");
+    private static void addNewStudent(Students StudentList, Scanner sc) {
+        System.out.println("Introdueix el nom del nou estudiant:");
         sc.nextLine();
         String name = sc.nextLine();
-        System.out.println("Enter the marital status of the student:");
+        System.out.println("Introdueix l'estat civil de l'estudiant:");
         String maritalStatus = sc.nextLine();
-        System.out.println("Enter the place of birth of the student:");
+        System.out.println("Introdueix el lloc de naixement de l'estudiant:");
         String placeOfBirth = sc.nextLine();
         BinaryTree bt = new BinaryTree();
-        String s = "Name: " + name + ", place of Origin: " + placeOfBirth + ", marital Status: " + maritalStatus;
+        String s = "Nom: " + name + ", lloc d'origen: " + placeOfBirth + ", estat civil: " + maritalStatus;
         bt.addNode(new Person(s), "");
         StudentList.addStudent(bt);
     }
 
     private static void modifyStudent(Students StudentList, Scanner sc) {
-        System.out.println("Enter the name of the student you want to modify:");
+        System.out.println("Introdueix el nom de l'estudiant que vols modificar:");
         sc.nextLine();
         String name = sc.nextLine();
         BinaryTree bt = StudentList.getStudent(name);
 
         if (bt == null) {
-            throw new NoSuchElementException("The student does not exist");
+            throw new NoSuchElementException("L'estudiant no existeix");
         }
 
-        System.out.println("- OPTIONS:");
-        System.out.println("1. Add a family member");
-        System.out.println("2. Remove a family member");
+        System.out.println("- OPCIONS:");
+        System.out.println("1. Afegir un membre de la família");
+        System.out.println("2. Eliminar un membre de la família");
         System.out.println();
 
-        System.out.println("Enter an option:");
+        System.out.println("Introdueix una opció:");
         int option = sc.nextInt();
         sc.nextLine();
 
         while (option < 1 || option > 2) {
-            System.out.println("Enter a valid option:");
+            System.out.println("Introdueix una opció vàlida:");
             option = sc.nextInt();
             sc.nextLine();
         }
 
         if (option == 1) {
-            System.out.println("Add family member");
-            System.out.println("Enter the name of the family member you want to add:");
+            System.out.println("Afegir membre de la família");
+            System.out.println("Introdueix el nom del membre de la família que vols afegir:");
             name = sc.nextLine();
-            System.out.println("Enter the marital status of the family member:");
+            System.out.println("Introdueix l'estat civil del membre de la família:");
             String maritalStatus = sc.nextLine();
-            System.out.println("Enter the place of birth of the family member:");
+            System.out.println("Introdueix el lloc de naixement del membre de la família:");
             String placeOfBirth = sc.nextLine();
-            String s = "Name: " + name + ", place of Origin: " + placeOfBirth + ", marital Status: " + maritalStatus;
+            String s = "Nom: " + name + ", lloc d'origen: " + placeOfBirth + ", estat civil: " + maritalStatus;
             System.out.println("Introdueix la ruta, L o R, ex: LRL , RRL , LRR , etc.");
             String ruta = sc.nextLine();
-            if(bt.addNode(new Person(s), ruta)){
-                System.out.println("Family member added successfully.");
+            if (bt.addNode(new Person(s), ruta)) {
+                System.out.println("Membre de la família afegit correctament.");
             } else {
-                System.out.println("Error adding family member.");
+                System.out.println("Error en afegir el membre de la família.");
             }
-        }
-        else if (option == 2) {
-            System.out.println("Remove family member, which one?");
+        } else if (option == 2) {
+            System.out.println("Eliminar membre de la família, quin?");
             String familyName = sc.nextLine();
             bt.removePerson(familyName);
         }
@@ -171,9 +170,9 @@ public class Main {
     private static void mostrarInforme(Students studentsList, Scanner sc) {
         sc.nextLine();
 
-        System.out.println("Enter the city where the student was born:");
+        System.out.println("Indica la ciutat de naixement a buscar:");
         String birthCity = sc.nextLine();
-        System.out.println("Enter the city of origin of the family:");
+        System.out.println("Indica la ciutat de procedència a buscar:");
         String familyOriginCity = sc.nextLine();
 
         int totalStudents = 0;
@@ -199,17 +198,16 @@ public class Main {
             if (!bt.marriedParents()) {
                 studentsWithUnmarriedParents++;
             }
-            if (bt.howManyGrandParents() > 2) {
+            if (bt.howManyGrandParents() >= 2) {
                 studentsWithMoreThanTwoGrandparents++;
             }
         }
 
-        System.out.println("Total number of students: " + totalStudents);
-        System.out.println("Number of students born in " + birthCity + ": " + studentsFromBirthCity);
-        System.out.println("Number of students with family origin in " + familyOriginCity + ": " + studentsFromFamilyOriginCity);
-        System.out.println("Number of students with one parent: " + (studentsWithOneParent + 1));
-        System.out.println("Number of students with unmarried parents: " + studentsWithUnmarriedParents);
-        System.out.println("Number of students with more than two grandparents: " + studentsWithMoreThanTwoGrandparents);
+        System.out.println("Nombre d'alumnes totals: " + totalStudents);
+        System.out.println("Hi ha " + studentsFromBirthCity + " alumnes de " + birthCity);
+        System.out.println("Hi ha " + studentsFromFamilyOriginCity + " alumnes descendents de " + familyOriginCity);
+        System.out.println("Hi ha " + (studentsWithOneParent + 1) + " alumnes amb un únic progenitor.");
+        System.out.println("Hi ha " + studentsWithUnmarriedParents + " alumnes amb progenitors no casats.");
+        System.out.println("Hi ha " + (studentsWithMoreThanTwoGrandparents + 1) + " alumnes amb dos o més avis o àvies.");
     }
-
 }
