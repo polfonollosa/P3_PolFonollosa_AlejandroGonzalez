@@ -28,9 +28,9 @@ public class BinaryTree {
                     } else if (this.esq == null || this.dre == null) {
                         buf.write(";");
                     }
-                    buf.newLine();
-                } else {
-                    buf.write(";");
+                    else {
+                        buf.write("");
+                    }
                     buf.newLine();
                 }
                 if (this.esq != null) {
