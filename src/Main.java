@@ -11,6 +11,7 @@ public class Main {
         list = readAllStudents("Files");
         Scanner sc = new Scanner(System.in);
 
+
         while (!exit) {
             System.out.println("Menu Principal:");
             System.out.println("\t1. Mostrar llistat d'estudiants");
@@ -21,12 +22,15 @@ public class Main {
             System.out.println("\t6. Guardar i Sortir");
             System.out.println("Tria una opció:");
 
+
             option = sc.nextInt();
+
 
             while (option < 1 || option > 6) {
                 System.out.println("Introdueix una opció vàlida:");
                 option = sc.nextInt();
             }
+
 
             switch (option) {
                 case 1:
@@ -49,6 +53,7 @@ public class Main {
                     exit = true;
                     break;
             }
+
 
         }
         System.out.println("Sortint...");

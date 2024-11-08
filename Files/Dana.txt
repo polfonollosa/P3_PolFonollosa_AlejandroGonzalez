@@ -1,5 +1,5 @@
-Name: Dana, place of Origin: Tarragona, marital status: Single
-Name: Ester, place of Origin: Reus, marital status: Married; 
-Name: Maria, place of Origin: Barcelona, marital status: Divorced; ; 
-Name: Oleguer, place of Origin: Tarragona, marital status: Married; 
-Name: Clara, place of Origin: Reus, marital status: Widowed; ; 
+Name: Dana, place of origin: Tarragona, marital status: Single
+Name: Ester, place of origin: Reus, marital status: Married;
+Name: Maria, place of origin: Barcelona, marital status: Divorced; ;
+Name: Oleguer, place of origin: Tarragona, marital status: Married;
+Name: Clara, place of origin: Reus, marital status: Widowed; ;

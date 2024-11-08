@@ -21,28 +21,41 @@ public class BinaryTree {
 
         private void preOrderSaveRecursive(BufferedWriter buf) {
             try {
-                if (this.inf != null) {
-                    buf.write(this.inf.toString());
-                    if (this.esq == null && this.dre == null) {
-                        buf.write("; ;");
-                    } else if (this.esq == null || this.dre == null) {
-                        buf.write(";");
-                    }
-                    else {
-                        buf.write("");
-                    }
+                String person = inf.toString();
+                buf.write(person);
+
+                // Caso de nodo hoja (sin hijos)
+                if (this.esq == null && this.dre == null) {
+                    buf.write("; ;");
                     buf.newLine();
+                    return;
                 }
-                if (this.esq != null) {
+                // Caso de nodo con solo hijo izquierdo
+                else if (this.esq != null && this.dre == null) {
+                    buf.write(";");
+                    buf.newLine();
                     this.esq.preOrderSaveRecursive(buf);
+                    return;
                 }
-                if (this.dre != null) {
+                // Caso de nodo con solo hijo derecho
+                else if (this.esq == null && this.dre != null) {
+                    buf.write(";");
+                    buf.newLine();
+                    this.dre.preOrderSaveRecursive(buf);
+                    return;
+                }
+                // Caso de nodo con ambos hijos
+                else {
+                    buf.write("");
+                    buf.newLine();
+                    this.esq.preOrderSaveRecursive(buf);
                     this.dre.preOrderSaveRecursive(buf);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
 
         private boolean addNodeRecursive(Person unaPersona, String level) {
             if (level.isEmpty()) {
@@ -73,17 +86,15 @@ public class BinaryTree {
         }
 
         public void displayTreeRecursive(int level) {
-            // Imprime el nodo actual con la cantidad correcta de tabuladores para su nivel
-            System.out.println("    ".repeat(level) + (this.inf != null ? this.inf.toString() : "null"));
-
-            // Llamada recursiva para el subárbol izquierdo
-            if (this.esq != null) {
-                this.esq.displayTreeRecursive(level + 1);
+            for (int i = 0; i < level; i++) {
+                System.out.print("      ");
             }
-
-            // Llamada recursiva para el subárbol derecho
+             System.out.println(inf.getName());
+            if (this.esq != null) {
+                esq.displayTreeRecursive(level + 1);
+            }
             if (this.dre != null) {
-                this.dre.displayTreeRecursive(level + 1);
+                dre.displayTreeRecursive(level + 1);
             }
         }
 
@@ -91,10 +102,10 @@ public class BinaryTree {
         private void removePersonRecursive(String name) {
             if (this.esq != null && (this.esq.inf).getName().equals(name)) {
                 System.out.println("Removing " + name);
-                this.esq.inf = null;
+                this.esq.inf = new Person(Person.SINGLE, esq.inf.getPlaceOfOrigin(), "*death");
             } else if (this.dre != null && (this.dre.inf).getName().equals(name)) {
                 System.out.println("Removing " + name);
-                this.dre.inf = null;
+                this.dre.inf = new Person(Person.SINGLE, esq.inf.getPlaceOfOrigin(), "*death");
             } else {
                 if (this.esq != null) {
                     this.esq.removePersonRecursive(name);
@@ -115,10 +126,11 @@ public class BinaryTree {
         }
 
         private int countNodesRecursive() {
+
             int count = 0;
             if (this.inf != null) {
                 if (this.esq != null) {
-                    if (this.esq.esq != null || this.esq.dre != null) {
+                    if (this.esq.esq != null && !this.esq.esq.inf.getName().equals("*death") || this.esq.dre != null) {
                         count++;
                     }
                     count += this.esq.countNodesRecursive();
@@ -155,39 +167,38 @@ public class BinaryTree {
 
     private NodeA preOrderLoad(BufferedReader buf) {
         try {
-            // Leer la siguiente línea del archivo
+            int cont = 0;
             String line = buf.readLine();
-            if (line == ";" || line.equals("-")) {
-                return null; // Nodo nulo si la línea es null o un guión
+            if(line == null){
+                return null;
             }
-
-            // Dividir la línea para extraer los datos de la persona
-            String[] parts = line.split(";");
-            String personInfo = parts[0];
-            Person person = new Person(personInfo); // Crear el objeto Persona con los datos
-            NodeA node = new NodeA(person); // Crear el nodo con la persona
-
-            // Determinar el número de hijos basándonos en el final de la línea
-            if (parts.length == 1) {
-                // No hay símbolos al final -> Nodo tiene dos hijos
-                node.esq = preOrderLoad(buf); // Llamada recursiva al hijo izquierdo
-                node.dre = preOrderLoad(buf); // Llamada recursiva al hijo derecho
-            } else if (parts.length == 2) {
-                // Un solo punto y coma al final -> Nodo tiene un hijo izquierdo
-                node.esq = preOrderLoad(buf); // Llamada recursiva solo al hijo izquierdo
-                node.dre = null; // No hay hijo derecho
-            } else if (parts.length == 3) {
-                // Dos punto y coma al final -> Nodo no tiene hijos
-                node.esq = null;
-                node.dre = null;
+            String[] dc = line.split(";");
+            Person p = new Person(dc[0]);
+            NodeA n = new NodeA(p);
+            for(int i = 0 ; i < line.length() ; i++){
+                if(line.charAt(i) == ';'){
+                    cont ++;
+                }
             }
+            if(cont == 2){
+                n.esq = null;
+                n.dre = null;
+            }
+            else if(cont == 1){
+                n.esq = preOrderLoad(buf);
+                n.dre = null;
+            }
+            else{
+                n.esq = preOrderLoad(buf);
+                n.dre = preOrderLoad(buf);
+            }
+            return n;
 
-            return node; // Retornar el nodo creado
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException(e);
         }
     }
+
 
 
     public boolean addNode(Person unaPersona, String level) {
@@ -281,3 +292,5 @@ public class BinaryTree {
     }
 
     }
+
+
