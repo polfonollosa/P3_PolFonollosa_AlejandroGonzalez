@@ -85,7 +85,7 @@ public class BinaryTree {
             return false;
         }
 
-        public void displayTreeRecursive(int level) {
+        private void displayTreeRecursive(int level) {
             for (int i = 0; i < level; i++) {
                 System.out.print("      ");
             }
@@ -145,7 +145,7 @@ public class BinaryTree {
             return count;
         }
     }
-    protected NodeA arrel;
+    private NodeA arrel;
 
     public BinaryTree(){
 
@@ -282,8 +282,8 @@ public class BinaryTree {
                 Person esquerre = this.arrel.esq.inf;
                 Person dreat = this.arrel.dre.inf;
                 if (esquerre != null && dreat != null &&
-                        esquerre.getMaritalStatusString().equals("Married") &&
-                        dreat.getMaritalStatusString().equals("Married")) {
+                        esquerre.getMaritalStatus() == Person.MARRIED &&
+                        dreat.getMaritalStatus() == Person.MARRIED) {
                     return true;
                 }
             }

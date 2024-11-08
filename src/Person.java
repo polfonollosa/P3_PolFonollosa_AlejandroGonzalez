@@ -58,7 +58,7 @@ public class Person {
         return this.maritalStatus;
     }
 
-    public String getMaritalStatusString() {
+    private String getMaritalStatusString() {
         switch (this.maritalStatus) {
             case Person.WIDOWED:
                 return "Widowed";
@@ -73,7 +73,8 @@ public class Person {
         }
     }
 
-    //Preferim   ficarho aqui que directament a write aixi es veu menys spaghuetti code, i creiem que encaixa prou bé sense modificar l'estructura general del còdig
+    //Preferim   ficarho aqui que directament a write aixi es veu menys spaghuetti code,
+    //també creiem que encaixa prou bé sense modificar l'estructura general del còdig
 
     @Override
     public String toString() {

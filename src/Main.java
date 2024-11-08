@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         int option;
         boolean exit = false;
-        Students list = new Students();
+        Students list;
         list = readAllStudents("Files");
         Scanner sc = new Scanner(System.in);
 
