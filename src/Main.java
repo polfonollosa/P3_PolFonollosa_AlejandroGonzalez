@@ -120,7 +120,12 @@ public class Main {
         String placeOfBirth = sc.nextLine();
         BinaryTree bt = new BinaryTree();
         String s = "Nom: " + name + ", lloc d'origen: " + placeOfBirth + ", estat civil: " + maritalStatus;
-        bt.addNode(new Person(s), "");
+        try {
+            bt.addNode(new Person(s), "");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error en afegir l'estudiant.");
+            return;
+        }
         StudentList.addStudent(bt);
     }
 
@@ -131,7 +136,8 @@ public class Main {
         BinaryTree bt = StudentList.getStudent(name);
 
         if (bt == null) {
-            throw new NoSuchElementException("L'estudiant no existeix");
+            System.out.println("L'estudiant no existeix");
+            return;
         }
 
         System.out.println("- OPCIONS:");
